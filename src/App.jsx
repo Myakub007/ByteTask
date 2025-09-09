@@ -6,17 +6,32 @@ import './App.css'
 function App() {
   const [count, setCount] = useState(0)
   const [datalink,setDatalink] = useState("github.com");
+  const [readmetemp,setReadmetemp] = useState("");
   const handleFetch= async ()=>{
 
     let reponame = datalink.split("/")[datalink.split("/").length-1];
     let username = datalink.split("/")[datalink.split("/").length-2];
     console.log(reponame);
     console.log(username);
-    let a = await fetch("https://api.github.com/repos/"+username+"/"+reponame);
-    let r = await a.json();
+    let repoData = await fetch("https://api.github.com/repos/"+username+"/"+reponame+"/contents");
+    let r = await repoData.json();
     console.log(r);
+   
+
+   let Content  = await fetch(`https://api.github.com/repos/${username}/${reponame}/contents`);
+   let c = await Content.json();
+   console.log(c);
+
+   let langRes = await fetch(`https://api.github.com/repos/${username}/${reponame}/languages`);
+   let langData = await langRes.json();
+   console.log(langData);
 
   }
+
+ const createReadme = (data) =>{
+      setReadmetemp(``)
+ }
+
   const handleChange = (e)=>{
     setDatalink(e.target.value);
   }
